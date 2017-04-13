@@ -9,38 +9,36 @@ package RunwayApp;
  *
  * @author Christopher
  */
-public class RunwayArray {
-    final int MAX_SLOTS = 100;
+class RunwayArray implements Runway // runway array
+{
+
+    final int MAX_SLOTS = 1000;
     final int TIME_INTERVAL = 3;
     Plane a[];
     int numPlanes = 0;
 
-
     // -------------------------------------------------------------
     public RunwayArray() // constructor
-        {
-            a = new Plane[MAX_SLOTS];
-            a[numPlanes++] = new Plane("Delta Inaugural Flight", 1);
-            System.out.println("added Delta Inaugural Flight @ time 1");
-        }
+    {
+        a = new Plane[MAX_SLOTS];
+        a[numPlanes++] = new Plane("Delta Inaugural Flight", 1);
+        System.out.println("added Delta Inaugural Flight @ time 1");
+    }
 
-
-    public void addPlane(String name, int time) {
-
+    public String addPlane(String name, int time) {
 
         if (binarySearchInterval(a, time)) {
             a[numPlanes++] = new Plane(name, time);
-            System.out.println("added plane @ time " + time);
+            //System.out.println("added plane @ time " + time);
             insertionSort();
             //displayPlanes();
+            return "added plane @ time " + time;
         } else {
-            System.out.println("time conflict @ time " + time);
+            //System.out.println("time conflict @ time " + time);
+            return "time conflict @ time " + time;
 
         }
     }
-
-
-
 
     public void displayPlanes() {
         int i;
@@ -51,7 +49,6 @@ public class RunwayArray {
         }
 
     }
-
 
     // from Drake book
     // heavily modified to check for time interval
@@ -86,32 +83,32 @@ public class RunwayArray {
                 return true;
             }
 
-        }         // if the time found is not the last time in the array
-         else if (Math.abs(a[found].getTime() - target) >= TIME_INTERVAL && Math.abs(a[found + 1].getTime() - target) >= TIME_INTERVAL) {
+        } // if the time found is not the last time in the array
+        else if (Math.abs(a[found].getTime() - target) >= TIME_INTERVAL && Math.abs(a[found + 1].getTime() - target) >= TIME_INTERVAL) {
             return true;
         }
 
         return false;
 
-
     }
-
-
 
     //from Lafore book
     public void insertionSort() {
-            int in , out;
+        int in ,
+        out;
 
-            for (out = 1; out < numPlanes; out++) // out is dividing line
+        for (out = 1; out < numPlanes; out++) // out is dividing line
+        {
+            Plane temp = a[out]; // remove marked item
+            in =out; // start shifts at out
+            while ( in >0 && a[ in -1].getTime() >= temp.getTime()) // until one is smaller,
             {
-                Plane temp = a[out]; // remove marked item
-                in = out; // start shifts at out
-                while ( in > 0 && a[ in -1].getTime() >= temp.getTime()) // until one is smaller,
-                {
-                    a[ in ] = a[ in -1]; // shift item to right
-                    -- in ; // go left one position
-                }
-                a[ in ] = temp; // insert marked item
-            } // end for
-        } // end insertionSort()
-}
+                a[ in ] = a[ in -1]; // shift item to right
+                --in; // go left one position
+            }
+            a[ in ] = temp; // insert marked item
+        } // end for
+    } // end insertionSort()
+
+    // -------------------------------------------------------------
+} // end class RunwayArray
